@@ -1,0 +1,429 @@
+
+/* =========================
+   GLOBAL STYLES
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: #f4f6fb;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.app {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc, #e0f2fe);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.07);
+}
+
+
+/* =========================
+   USER PROFILE HEADER
+========================= */
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 25px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.profile-picture {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e0e7ff;
+}
+
+.welcome-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.user-email {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.logout-button {
+  background: #fff1f2;
+  color: #e11d48;
+  padding: 10px 18px;
+  border-radius: 9px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #ffe4e6;
+  transform: translateY(-2px);
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+h1 {
+  font-size: 34px;
+  font-weight: 800;
+  text-align: center;
+  color: #312e81;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+
+/* =========================
+   TEXT INPUT
+========================= */
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  padding: 20px;
+  border: 1px solid #cbd5e1;
+  border-radius: 13px;
+  outline: none;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #334155;
+  background: #f8fafc;
+  transition: 0.25s ease;
+}
+
+textarea::placeholder {
+  color: #94a3b8;
+}
+
+textarea:focus {
+  border-color: #6366f1;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+
+/* =========================
+   WORD AND CHARACTER COUNT
+========================= */
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 12px 2px 22px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* =========================
+   SUMMARIZE BUTTON
+========================= */
+
+.container > button:not(.logout-button) {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  padding: 13px 25px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+
+.container > button:not(.logout-button):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.25);
+}
+
+.container > button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.container > button:not(.logout-button) {
+  display: block;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  padding: 13px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+
+
+
+/* =========================
+   ERROR MESSAGE
+========================= */
+
+.error {
+  margin-top: 18px;
+  padding: 13px 16px;
+  background: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fecdd3;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+
+/* =========================
+   GENERATED SUMMARY
+========================= */
+
+.summary-box {
+  margin-top: 28px;
+  padding: 25px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 14px;
+  animation: fadeIn 0.35s ease;
+}
+
+.summary-box h2 {
+  color: #3730a3;
+  font-size: 21px;
+  margin-bottom: 15px;
+}
+
+.summary-box p {
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================
+   HISTORY SECTION
+========================= */
+
+.history-section {
+  margin-top: 45px;
+  padding-top: 28px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.history-section > h2 {
+  font-size: 23px;
+  color: #1e293b;
+  margin-bottom: 22px;
+}
+
+.history-section > p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.history-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+  padding: 22px;
+  margin-bottom: 18px;
+  transition: 0.25s ease;
+}
+
+.history-card:hover {
+  border-color: #a5b4fc;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+  transform: translateY(-2px);
+}
+
+.history-date {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+.history-card h3 {
+  font-size: 15px;
+  color: #4338ca;
+  margin: 15px 0 8px;
+}
+
+.history-card p:not(.history-date) {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================
+   HISTORY BUTTONS
+========================= */
+
+.history-card button {
+  margin-top: 17px;
+  margin-right: 10px;
+  padding: 9px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.history-card button:first-of-type {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.history-card button:first-of-type:hover {
+  background: #c7d2fe;
+}
+
+.history-card button:last-of-type {
+  background: #ffe4e6;
+  color: #be123c;
+}
+
+.history-card button:last-of-type:hover {
+  background: #fecdd3;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 768px) {
+  .app {
+    padding: 20px 12px;
+  }
+
+  .container {
+    padding: 22px 17px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  textarea {
+    min-height: 190px;
+  }
+
+  .history-card {
+    padding: 17px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-header {
+    align-items: flex-start;
+  }
+
+  .profile-picture {
+    width: 43px;
+    height: 43px;
+  }
+
+  .welcome-text {
+    font-size: 14px;
+  }
+
+  .user-email {
+    font-size: 11px;
+    overflow-wrap: anywhere;
+  }
+
+  .logout-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .info {
+    font-size: 11px;
+  }
+
+  .history-card button {
+    margin-right: 5px;
+    padding: 9px 11px;
+  }
+}
