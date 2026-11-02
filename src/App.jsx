@@ -23,7 +23,7 @@ function App() {
 
       try {
         const response = await fetch(
-          "http://localhost:5000/auth/user",
+          `${import.meta.env.VITE_API_URL}/auth/user`,
           {
             credentials: "include",
           }
@@ -60,7 +60,7 @@ function App() {
     console.log("Starting Google login...");
 
     window.location.href =
-      "http://localhost:5000/auth/google";
+      `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   // Logout
@@ -69,7 +69,7 @@ function App() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/auth/logout",
+        `${import.meta.env.VITE_API_URL}/auth/logout`,
         {
           credentials: "include",
         }
@@ -100,7 +100,7 @@ function App() {
       setLoadingHistory(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/history",
+        `${import.meta.env.VITE_API_URL}/api/history`,
         {
           credentials: "include",
         }
@@ -141,7 +141,7 @@ function App() {
       console.log("Text length:", text.length);
 
       const response = await fetch(
-        "http://localhost:5000/api/summarize",
+        `${import.meta.env.VITE_API_URL}/api/summarize`,
         {
           method: "POST",
           credentials: "include",
@@ -186,7 +186,7 @@ function App() {
       console.log("Deleting summary:", id);
 
       const response = await fetch(
-        `http://localhost:5000/api/history/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/history/${id}`,
         {
           method: "DELETE",
           credentials: "include",

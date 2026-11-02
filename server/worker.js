@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const amqp = require("amqplib");
 const nodemailer = require("nodemailer");
 
@@ -19,7 +18,9 @@ async function startWorker() {
     console.log("Starting email worker...");
 
     // Connect to RabbitMQ
-    const connection = await amqp.connect("amqp://localhost:5672");
+    const connection = await amqp.connect(
+      process.env.RABBITMQ_URL || "amqp://localhost:5672"
+    );
     console.log("Worker connected to RabbitMQ");
 
     const channel = await connection.createChannel();

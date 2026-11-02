@@ -11,9 +11,9 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { getChannel } = require("./config/rabbitmq");
 const { GoogleGenAI } = require("@google/genai");
-
+const { MongoStore } = require("connect-mongo");
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Gemini configuration
 const ai = new GoogleGenAI({
@@ -22,22 +22,29 @@ const ai = new GoogleGenAI({
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
   credentials: true,
 }));
 
 app.use(express.json());
-
+app.set("trust proxy", 1);
 // Session configuration
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
+      ttl: 14 * 24 * 60 * 60,
+    }),
+
     cookie: {
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
   })
 );
@@ -163,13 +170,13 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173/?login=failed",
+    failureRedirect: `${process.env.CLIENT_URL || "http://localhost:5173"}/?login=failed`,
   }),
   (req, res) => {
     console.log("Google login completed");
     console.log("Logged-in user:", req.user.email);
 
-    res.redirect("http://localhost:5173/?login=success");
+    res.redirect(`${process.env.CLIENT_URL || "http://localhost:5173"}/?login=success`);
   }
 );
 
@@ -359,7 +366,7 @@ mongoose.connect(process.env.MONGO_URI)
 
     // Start Express server
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
   })
   .catch((error) => {
