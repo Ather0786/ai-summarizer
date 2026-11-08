@@ -1,17 +1,12 @@
+
 require("dotenv").config();
+
 const amqp = require("amqplib");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 const QUEUE_NAME = "welcome_emails";
 
-// Configure Gmail transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function startWorker() {
   try {
@@ -21,6 +16,7 @@ async function startWorker() {
     const connection = await amqp.connect(
       process.env.RABBITMQ_URL || "amqp://localhost:5672"
     );
+
     console.log("Worker connected to RabbitMQ");
 
     const channel = await connection.createChannel();
@@ -42,9 +38,9 @@ async function startWorker() {
         console.log("Received welcome email request");
         console.log("Sending email to:", user.email);
 
-        // Send welcome email
-        await transporter.sendMail({
-          from: process.env.GMAIL_USER,
+        // Send welcome email using Resend
+        const { data, error } = await resend.emails.send({
+          from: "AI Summarizer <onboarding@resend.dev>",
           to: user.email,
           subject: "Welcome to AI Summarizer!",
           text: `Hello ${user.name},
@@ -71,22 +67,39 @@ The AI Summarizer Team
 Simplify reading. Save time. Stay informed.`,
         });
 
+        // Check whether Resend returned an error
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        console.log("Welcome email sent successfully");
+        console.log("Resend Email ID:", data.id);
+
         console.log("Welcome email sent successfully");
 
-        // Tell RabbitMQ the message was processed
+        // Acknowledge successful processing
         channel.ack(message);
 
       } catch (error) {
         console.error("Email processing failed:", error);
 
-        // Remove the failed message from the queue
+        // Remove failed message from the queue
         channel.nack(message, false, false);
       }
     });
+
+    console.log("Email worker started successfully");
 
   } catch (error) {
     console.error("Worker failed to start:", error);
   }
 }
 
-startWorker();
+// Start automatically only when running:
+// node worker.js
+if (require.main === module) {
+  startWorker();
+}
+
+// Export so server.js can start the worker
+module.exports = { startWorker };

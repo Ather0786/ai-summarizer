@@ -12,6 +12,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { getChannel } = require("./config/rabbitmq");
 const { GoogleGenAI } = require("@google/genai");
 const { MongoStore } = require("connect-mongo");
+const { startWorker } = require("./worker");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -359,12 +360,14 @@ mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
     console.log("MongoDB Atlas connected successfully");
 
-    // Connect to RabbitMQ
     await connectRabbitMQ();
+    console.log("RabbitMQ publisher connected successfully");
 
-    console.log("All services connected successfully");
+    // Start the email worker
+    startWorker();
 
-    // Start Express server
+    console.log("Email worker initialization started");
+
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
